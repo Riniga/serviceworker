@@ -2,15 +2,16 @@ self.addEventListener('activate', async () =>
 {
     try 
     {
-      const publicKey='BEeyN3NngzEKkT9RjdiO361ffv6tZpC0xkPFzgI5riNn944Gi-jzhQZa7hRnIgxFgOehhSBaAtyvwMaQDCZq3gs';
+      const publicKey='BKhSHyPZOZiEhBfIvnLRosMKpWeprqHWXK5r7Pv650HYlOkpbn16-ri4tJubVNDvO7zhWSytqQhsh3ngsuv348M';
       const applicationServerKey = encodeBase64ToArrrayBuffer(publicKey);
       const options = { applicationServerKey, userVisibleOnly: true }
       const subscription = await self.registration.pushManager.subscribe(options);
       console.log(JSON.stringify(subscription))
       const response = await saveSubscription(subscription);
       console.log(response)
-    } catch (err) {
-      console.log('Error', err)
+    } catch (err) 
+    {
+      console.log('Error:', err)
     }
 });
 
@@ -36,18 +37,22 @@ function encodeBase64ToArrrayBuffer(base64String)
     return outputArray
 }
 
-function saveSubscription(subscription)
+async function saveSubscription(subscription)
 {
+  console.log("Saving subscription.");
   const SERVER_URL = 'http://localhost:4000/save-subscription'
+  const body = JSON.stringify(subscription)
+
   const response = await fetch(SERVER_URL, 
     {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(subscription),
+      body: body,
     })
-  return response.json()
+   return response.json()
+  //return "test";
 }
 
 

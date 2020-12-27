@@ -1,0 +1,30 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "A basic push notification server",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Riniga/javascriptgame.git"
+  },
+  "keywords": [
+    "server",
+    "push",
+    "notifications"
+  ],
+  "author": "Rickard Nisses-Gagnér",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Riniga/javascriptgame/issues"
+  },
+  "homepage": "https://github.com/Riniga/javascriptgame#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "open": "^7.3.0",
+    "web-push": "^3.4.4"
+  }
+}
