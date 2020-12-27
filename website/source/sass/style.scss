@@ -1,0 +1,20 @@
+$theme-colors: (
+     "primary": #00B7FF
+);
+
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  color: white;
+  background: rgb(92,18,18);
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+canvas {
+  display: block;
+}
+
