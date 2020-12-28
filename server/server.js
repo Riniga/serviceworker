@@ -2,14 +2,6 @@ const openbrowser = require('open');
 const express = require('express') 
 const cors = require('cors') 
 const bodyParser = require('body-parser')
-const crypto = require('crypto');
-const ece = require('http_ece');
-const urlBase64 = require('urlsafe-base64');
-const url = require('url');
-const https = require('https');
-const jws = require('jws');
-const asn1 = require('asn1.js');
-
 
 const app = express() 
 app.use(cors()) 
@@ -26,7 +18,6 @@ async function saveToDatabase(subscription)
 app.post('/save-subscription', async (req, res) => 
 {
   console.log("Added Subscriber!");
-  
   const subscription = req.body;
   console.log(subscription);
   await saveToDatabase(subscription);

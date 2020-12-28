@@ -9,20 +9,25 @@ self.addEventListener('activate', async () =>
       console.log(JSON.stringify(subscription))
       const response = await saveSubscription(subscription);
       console.log(response)
-    } catch (err) 
-    {
-      console.log('Error:', err)
+    } catch (err) {
+      console.log('Error', err)
     }
 });
 
 self.addEventListener('push', function(event) {
   if (event.data) {
-    console.log('Push event!! ', event.data.text())
+    console.log('Notification: ', event.data.text())
+
+    event.waitUntil(
+      self.registration.showNotification(event.data.text(), {
+        body: 'Notification from the server',
+        tag: 'vibration-sample'
+      })
+    );
   } else {
     console.log('Push event but no data')
-  }
+  } 
 })
-
 
 function encodeBase64ToArrrayBuffer(base64String) 
 {
@@ -39,20 +44,18 @@ function encodeBase64ToArrrayBuffer(base64String)
 
 async function saveSubscription(subscription)
 {
-  console.log("Saving subscription.");
-  const SERVER_URL = 'http://localhost:4000/save-subscription'
-  const body = JSON.stringify(subscription)
-
+  //const SERVER_URL = 'http://localhost:4000/save-subscription'
+  const SERVER_URL = 'http://localhost:7071/api/save-subscription';
+  console.log("saving to: " + SERVER_URL);
   const response = await fetch(SERVER_URL, 
     {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: body,
+      body: JSON.stringify(subscription),
     })
-   return response.json()
-  //return "test";
+  return response.json()
 }
 
 

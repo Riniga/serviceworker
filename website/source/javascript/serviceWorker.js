@@ -2,7 +2,7 @@ self.addEventListener('activate', async () =>
 {
     try 
     {
-      const publicKey='BEeyN3NngzEKkT9RjdiO361ffv6tZpC0xkPFzgI5riNn944Gi-jzhQZa7hRnIgxFgOehhSBaAtyvwMaQDCZq3gs';
+      const publicKey='BKhSHyPZOZiEhBfIvnLRosMKpWeprqHWXK5r7Pv650HYlOkpbn16-ri4tJubVNDvO7zhWSytqQhsh3ngsuv348M';
       const applicationServerKey = encodeBase64ToArrrayBuffer(publicKey);
       const options = { applicationServerKey, userVisibleOnly: true }
       const subscription = await self.registration.pushManager.subscribe(options);
@@ -16,12 +16,18 @@ self.addEventListener('activate', async () =>
 
 self.addEventListener('push', function(event) {
   if (event.data) {
-    console.log('Push event!! ', event.data.text())
+    console.log('Notification: ', event.data.text())
+
+    event.waitUntil(
+      self.registration.showNotification(event.data.text(), {
+        body: 'Notification from the server',
+        tag: 'vibration-sample'
+      })
+    );
   } else {
     console.log('Push event but no data')
-  }
+  } 
 })
-
 
 function encodeBase64ToArrrayBuffer(base64String) 
 {
@@ -36,9 +42,11 @@ function encodeBase64ToArrrayBuffer(base64String)
     return outputArray
 }
 
-function saveSubscription(subscription)
+async function saveSubscription(subscription)
 {
-  const SERVER_URL = 'http://localhost:4000/save-subscription'
+  //const SERVER_URL = 'http://localhost:4000/save-subscription'
+  const SERVER_URL = 'http://localhost:7071/api/save-subscription';
+  console.log("saving to: " + SERVER_URL);
   const response = await fetch(SERVER_URL, 
     {
       method: 'post',
