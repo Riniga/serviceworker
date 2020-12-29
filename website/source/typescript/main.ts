@@ -19,7 +19,7 @@ function hasServiceWorkerSupport()
 
 const registerServiceWorker = async () => 
 {
-    const swRegistration = await navigator.serviceWorker.register('/scripts/serviceWorker.js'); 
+    const swRegistration = await navigator.serviceWorker.register('/serviceWorker.js'); 
     return swRegistration;
 }
 

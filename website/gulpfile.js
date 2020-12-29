@@ -35,14 +35,25 @@ gulp.task('javascript', function() {
   ;
 });
 
+gulp.task('favicon', function() {
+    return gulp.src('./source/favicon.ico')
+      .pipe(gulp.dest('./public'));
+  });
+
+gulp.task('serviceworker', function() {
+    return gulp.src('./public/scripts/serviceWorker.js')
+      .pipe(gulp.dest('./public'));
+});
+
+
 
 gulp.task('watch', function () {
     gulp.watch('source/pug/**/*.pug', gulp.series('pug'));
     gulp.watch('source/sass/**/*.scss', gulp.series('sass'));
     gulp.watch('source/typescript/**/*.ts', gulp.series('typescript'));
-    gulp.watch('source/javascript/**/*.js', gulp.series('javascript'));
+    gulp.watch('source/javascript/**/*.js', gulp.series('javascript', 'serviceworker'));
 });
 
-gulp.task('default', gulp.series('clean','pug','sass','typescript','javascript', function (done) {
+gulp.task('default', gulp.series('clean','pug','sass','typescript','javascript','favicon', 'serviceworker', function (done) {
     done();
 }));

@@ -1,14 +1,49 @@
-self.addEventListener('activate', async () => 
+const filesToCache = [
+  '/stylesheets/style.css',
+  '/scripts/main.js',
+  '/serviceWorker.js',
+  '/scripts/sketch.js',
+  '/index.html',
+  '/',
+];
+
+const staticCacheName = 'cache-v20201229';
+
+self.addEventListener('install', event => {
+  console.log('Application shell files stored in service workers cache');
+  event.waitUntil(
+    caches.open(staticCacheName)
+    .then(cache => {
+      return cache.addAll(filesToCache);
+    })
+  );
+});
+
+
+self.addEventListener('fetch', function(event) {
+  event.respondWith(
+    caches.match(event.request).then(function(response) {
+      return response || fetch(event.request);
+    })
+  );
+});
+
+
+self.addEventListener('activate', function() 
 {
     try 
     {
       const publicKey='BKhSHyPZOZiEhBfIvnLRosMKpWeprqHWXK5r7Pv650HYlOkpbn16-ri4tJubVNDvO7zhWSytqQhsh3ngsuv348M';
       const applicationServerKey = encodeBase64ToArrrayBuffer(publicKey);
       const options = { applicationServerKey, userVisibleOnly: true }
-      const subscription = await self.registration.pushManager.subscribe(options);
+      const subscription = self.registration.pushManager.subscribe(options);
       console.log(JSON.stringify(subscription))
-      const response = await saveSubscription(subscription);
-      console.log(response)
+      //const response = await saveSubscription(subscription);
+      //console.log(response)
+      
+      console.log('Claiming control');
+      return self.clients.claim();
+
     } catch (err) {
       console.log('Error', err)
     }
