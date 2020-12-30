@@ -21,14 +21,6 @@ gulp.task('sass', function () {
         .pipe(gulp.dest('./public/stylesheets'));
 });
 
-var ts = require('gulp-typescript');
-var tsProject = ts.createProject('tsconfig.json');
-gulp.task('typescript', function () {
-    return gulp.src('./source/typescript/**/*.ts')
-        .pipe(tsProject())
-        .js.pipe(gulp.dest('./public/scripts'));
-});
-
 gulp.task('javascript', function() {
   return gulp.src('./source/javascript/**/*.js')
     .pipe(gulp.dest('./public/scripts'))
@@ -50,10 +42,9 @@ gulp.task('serviceworker', function() {
 gulp.task('watch', function () {
     gulp.watch('source/pug/**/*.pug', gulp.series('pug'));
     gulp.watch('source/sass/**/*.scss', gulp.series('sass'));
-    gulp.watch('source/typescript/**/*.ts', gulp.series('typescript'));
     gulp.watch('source/javascript/**/*.js', gulp.series('javascript', 'serviceworker'));
 });
 
-gulp.task('default', gulp.series('clean','pug','sass','typescript','javascript','favicon', 'serviceworker', function (done) {
+gulp.task('default', gulp.series('clean','pug','sass','javascript','favicon', 'serviceworker', function (done) {
     done();
 }));
