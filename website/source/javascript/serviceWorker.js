@@ -29,21 +29,17 @@ self.addEventListener('fetch', function(event) {
 });
 
 
-self.addEventListener('activate', function() 
+self.addEventListener('activate', async function() 
 {
     try 
     {
       const publicKey='BKhSHyPZOZiEhBfIvnLRosMKpWeprqHWXK5r7Pv650HYlOkpbn16-ri4tJubVNDvO7zhWSytqQhsh3ngsuv348M';
       const applicationServerKey = encodeBase64ToArrrayBuffer(publicKey);
       const options = { applicationServerKey, userVisibleOnly: true }
-      const subscription = self.registration.pushManager.subscribe(options);
+      const subscription = await self.registration.pushManager.subscribe(options);
       console.log(JSON.stringify(subscription))
-      //const response = await saveSubscription(subscription);
-      //console.log(response)
-      
-      console.log('Claiming control');
-      return self.clients.claim();
-
+      const response = await saveSubscription(subscription);
+      console.log(response);
     } catch (err) {
       console.log('Error', err)
     }
@@ -56,7 +52,7 @@ self.addEventListener('push', function(event) {
     event.waitUntil(
       self.registration.showNotification(event.data.text(), {
         body: 'Notification from the server',
-        tag: 'vibration-sample'
+        tag: 'notification-sample'
       })
     );
   } else {
@@ -90,7 +86,7 @@ async function saveSubscription(subscription)
       },
       body: JSON.stringify(subscription),
     })
-  return response.json()
+  return response;
 }
 
 
